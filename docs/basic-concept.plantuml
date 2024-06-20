@@ -1,0 +1,62 @@
+@startuml basic-concept
+title Docker Image Roles
+
+rectangle Hosting {
+  rectangle app as app'' {
+  }
+}
+
+rectangle Remote {
+  rectangle builder as builder' {
+  }
+  rectangle runner as runner' {
+  }
+  rectangle app as app' {
+  }
+
+  "builder'" -[hidden]r- "runner'"
+  "runner'" -[hidden]r- "app'"
+}
+
+rectangle "local/CI" {
+  rectangle builder #line.bold {
+    rectangle dev {
+    }
+    rectangle runtime {
+    }
+    dev -> runtime : compile\nslim down
+  }
+  rectangle runner #line.bold {
+    rectangle runtime as runtime' #line.dotted {
+    }
+  }
+
+  collections app #line.bold
+  note bottom of app
+  Dockerfile
+  several CMDs or
+  ENTRYPOINTs
+  end note
+
+  runtime -[hidden]r- "runtime'"
+  runtime -> "runtime'"
+
+  "runtime'" -> app
+
+  rectangle source {
+  }
+  rectangle source' {
+  }
+
+  source -u-> dev : install\npackages
+  source -u-> runtime : compile\napp
+  runtime --> "source'"
+  "source'" -u-> "runtime'" : whole
+}
+
+builder -u-> "builder'"
+runner -u-> "runner'"
+app -u-> "app'"
+
+"app'" -u-> "app''"
+@enduml

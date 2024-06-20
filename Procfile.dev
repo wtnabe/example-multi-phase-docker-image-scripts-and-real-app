@@ -1,0 +1,2 @@
+web: RACK_ENV=development bundle exec rerun -- rackup -p 3000
+vite: bin/vite dev

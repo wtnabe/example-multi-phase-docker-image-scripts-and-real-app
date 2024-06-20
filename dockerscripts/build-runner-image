@@ -1,0 +1,29 @@
+#! /bin/bash
+
+#
+# Usage:
+#   build-runner-image <app> <dockerfile>
+#
+
+ROOT=$(dirname $(realpath `dirname $0`))
+
+APP=$1
+DOCKER_FILE=$2
+SOURCE_DIR=${3:-$ROOT}
+
+
+if [ -n "$APP" -a -n "$DOCKER_FILE" -a -n "$SOURCE_DIR" ]; then
+  RUBY_RUNNER_BASE=ruby:3.1.2-slim-bullseye
+  BUILDER=${APP}-builder
+  POSTGRESQL_VERSION=13 # Debian bullseye には 14 がない
+
+  docker build -t ${APP}-runner \
+         --build-arg RUBY_RUNNER_BASE=$RUBY_RUNNER_BASE \
+         --build-arg BUILDER=$BUILDER \
+         --build-arg POSTGRESQL_VERSION=$POSTGRESQL_VERSION \
+         -f $DOCKER_FILE \
+         $SOURCE_DIR
+else
+  echo "build-runner-image"
+  echo "Nothing to do."
+fi

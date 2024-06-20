@@ -1,0 +1,8 @@
+*~
+*.bak
+.DS_Store
+/.bundle
+/vendor
+/node_modules
+/public/vite
+/tmp/

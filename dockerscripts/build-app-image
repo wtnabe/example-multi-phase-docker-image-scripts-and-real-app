@@ -1,0 +1,30 @@
+#! /bin/bash
+
+#
+# Usage:
+#   build-app-image <app> <dockerfile> [path]
+#
+
+#REGISTRY
+
+ROOT=$(dirname $(realpath `dirname $0`))
+
+APP=$1
+DOCKER_FILE=$2
+SOURCE_DIR=${3:-$ROOT}
+
+if [ -n "$APP" -a -n "$DOCKER_FILE" -a -n "$SOURCE_DIR" ]; then
+  RUNNER=${APP}-runner
+
+  apps=(web cli)
+  for i in "${apps[@]}"; do
+    docker build -t ${APP}-${i} \
+           --target $i \
+           --build-arg RUNNER=$RUNNER \
+           -f $DOCKER_FILE \
+           $SOURCE_DIR
+  done
+else
+  echo "build-app-image"
+  echo "Nothing to do"
+fi

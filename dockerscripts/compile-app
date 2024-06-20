@@ -1,0 +1,20 @@
+#! /bin/bash
+
+#
+# Usage:
+#   compile-app <app> [path]
+#
+
+ROOT=$(dirname $(realpath `dirname $0`))
+
+APP=$1
+SOURCE_DIR=${2:-$ROOT}
+
+if [ -n "$APP" -a -n "$SOURCE_DIR" ]; then
+  docker run --rm -i -v $SOURCE_DIR:/workspace ${APP}-builder <<EOF
+bundle exec vite build
+EOF
+else
+  echo "compile-app"
+  echo "Nothing to do"
+fi

@@ -1,0 +1,32 @@
+ARG BUILDER
+ARG RUBY_RUNNER_BASE
+
+#
+# 事前に用意しておいた動作に必要なパッケージのコピー元イメージ
+#
+
+FROM $BUILDER as builder
+
+#
+# アプリケーションの実行イメージの元
+# assetsのコンパイルは行わないのでRuby用のパッケージのみを含む
+#
+
+FROM $RUBY_RUNNER_BASE
+ARG POSTGRESQL_VERSION
+
+WORKDIR /workspace
+ENV BUNDLE_APP_CONFIG=/workspace/.bundle
+
+#
+# ミドルウェアパッケージを追加
+#
+
+RUN apt-get update && apt-get install -y -q --no-install-recommends libpq5 postgresql-client-$POSTGRESQL_VERSION
+
+#
+# インストール済みのRubygemsパッケージをコピー
+#
+RUN mkdir -p /packages
+COPY --from=builder /packages/.bundle /packages/.bundle
+COPY --from=builder /packages/vendor /packages/vendor

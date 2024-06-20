@@ -1,0 +1,15 @@
+*~
+*.bak
+
+**/.bundle
+**/.git
+**/.*
+**/docs
+**/.yarn
+**/tmp
+**/log
+**/node_modules
+**/vendor
+**/vite-dev
+**/vite-test
+**/db/pgdata
