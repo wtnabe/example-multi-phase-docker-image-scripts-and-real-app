@@ -18,6 +18,7 @@ if [ -n "$APP" -a -n "$DOCKER_FILE" -a -n "$SOURCE_DIR" ]; then
   POSTGRESQL_VERSION=13 # Debian bullseye には 14 がない
 
   docker build -t ${APP}-runner \
+         --cache-from $BUILDER \
          --build-arg RUBY_RUNNER_BASE=$RUBY_RUNNER_BASE \
          --build-arg BUILDER=$BUILDER \
          --build-arg POSTGRESQL_VERSION=$POSTGRESQL_VERSION \
