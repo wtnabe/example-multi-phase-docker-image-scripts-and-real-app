@@ -11,7 +11,6 @@ APP=$1
 DOCKER_FILE=$2
 SOURCE_DIR=${3:-$ROOT}
 
-
 if [ -n "$APP" -a -n "$DOCKER_FILE" -a -n "$SOURCE_DIR" ]; then
   RUBY_RUNNER_BASE=ruby:3.1.2-slim-bullseye
   BUILDER=${APP}-builder
@@ -19,6 +18,7 @@ if [ -n "$APP" -a -n "$DOCKER_FILE" -a -n "$SOURCE_DIR" ]; then
 
   docker build -t ${APP}-runner \
          --cache-from $BUILDER \
+         --pull \
          --build-arg RUBY_RUNNER_BASE=$RUBY_RUNNER_BASE \
          --build-arg BUILDER=$BUILDER \
          --build-arg POSTGRESQL_VERSION=$POSTGRESQL_VERSION \

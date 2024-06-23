@@ -20,6 +20,7 @@ if [ -n "$APP" -a -n "$DOCKER_FILE" -a -n "$SOURCE_DIR" ]; then
   for i in "${apps[@]}"; do
     docker build -t ${APP}-${i} \
            --cache-from $RUNNER \
+           --pull \
            --target $i \
            --build-arg RUNNER=$RUNNER \
            -f $DOCKER_FILE \

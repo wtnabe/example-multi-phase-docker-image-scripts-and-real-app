@@ -21,6 +21,7 @@ if [ -n "$APP" -a -n "$DOCKER_FILE" -a -n "$SOURCE_DIR" ]; then
 
   docker build \
          -t ${APP}-builder \
+         --pull \
          --build-arg NODE_BASE=$NODE_BASE \
          --build-arg YARN_PATH=$YARN_PATH \
          --build-arg RUBY_BUILDER_BASE=$RUBY_BUILDER_BASE \
