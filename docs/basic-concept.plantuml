@@ -1,10 +1,13 @@
 @startuml basic-concept
-title Docker Image Roles
+title Docker Image Roles and Build Phases
 
 rectangle Hosting {
   rectangle app as app'' {
   }
 }
+note left of "app''"
+build and deploy frequently
+end note
 
 rectangle Remote {
   rectangle builder as builder' {
@@ -24,10 +27,10 @@ rectangle "local/CI" {
     }
     rectangle runtime {
     }
-    dev -> runtime : compile\nslim down
+    dev -> runtime : 1. compile\nslim down
   }
   rectangle runner #line.bold {
-    rectangle runtime as runtime' #line.dotted {
+    rectangle "3. runtime" as runtime' #line.dotted {
     }
   }
 
@@ -41,16 +44,16 @@ rectangle "local/CI" {
   runtime -[hidden]r- "runtime'"
   runtime -> "runtime'"
 
-  "runtime'" -> app
+  "runtime'" -> app : "   4"
 
   rectangle source {
   }
   rectangle source' {
   }
 
-  source -u-> dev : install\npackages
-  source -u-> runtime : compile\napp
-  runtime --> "source'"
+  source -u-> dev : 1. install\npackages
+  source -u-> runtime : 2. compile\napp
+  runtime --> "source'": 2
   "source'" -u-> "runtime'" : whole
 }
 
